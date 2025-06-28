@@ -1,7 +1,7 @@
 # project modules
 from src.secretario_bot.enums import languages, llm_models
 from src.secretario_bot.llm_message_generator import LLMMessageGenerator
-from src.secretario_bot.asana_tasks import AsanaAPI
+from apis.asana import AsanaAPI
 
 # packages
 from telegram import (
