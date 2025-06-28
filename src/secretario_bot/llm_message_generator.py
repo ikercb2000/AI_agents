@@ -5,6 +5,7 @@ from src.secretario_bot.enums import llm_models
 # packages
 
 from llama_cpp import Llama
+import time
 
 # LLM Bot
 
@@ -15,14 +16,18 @@ class LLMMessageGenerator:
         Initializes the LLMMessageGenerator with the provided model path.
         """
         self.model = Llama.from_pretrained(repo_id=self.model_repo(model), filename=self.model_path(
-            model))
+            model), verbose=False, max_tokens=600, temperature=0.7)
 
     def generate_message(self, prompt: str) -> str:
         """
         Generates a message based on the provided prompt using the LLM model.
         """
-        response = self.model(prompt)
-        return response['choices'][0]['text'].strip()
+        t0 = time.perf_counter()
+        response = self.model(prompt, max_tokens=600, temperature=0.7)
+        elapsed = time.perf_counter() - t0
+        text = response['choices'][0]['text'].strip()
+        print(f"RESPONSE ({elapsed:.2f}s)", flush=True)
+        return text
 
     @staticmethod
     def model_repo(model: llm_models) -> str:
